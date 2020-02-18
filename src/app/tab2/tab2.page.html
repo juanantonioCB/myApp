@@ -1,9 +1,35 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab Two
+      Nueva Incidencia
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+
+  <img (click)="createPopover()" style="display: block;margin-left: auto;margin-right: auto;width: 40%;" [src]="image" />
+
+  <form [formGroup]="incidenciaForm">
+    <ion-item>
+      <ion-label position="floating">Título</ion-label>
+      <ion-input formControlName="titulo" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-input formControlName="descripcion" type="text"></ion-input>
+    </ion-item>
+
+  </form>
+  <ion-item>
+    <ion-label position="floating">Ubicación</ion-label>
+    <ion-input [(ngModel)]="ubicacion" type="text"></ion-input>
+  </ion-item>
+  <ion-button expand="full" color="danger" (click)="cargarUbicacion()">Introducir Ubicación</ion-button>
+  <div id="map_canvas" style="width:100%; height:200px;"></div>
+
+
+  <ion-button expand="full" color="primary" (click)="crearIncidencia()">Abrir Incidencia</ion-button>
+
+
+</ion-content>

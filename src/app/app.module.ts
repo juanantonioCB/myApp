@@ -14,6 +14,9 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { LocationPipe } from './location.pipe';
+import { Map, latLng, tileLayer, Layer, marker } from 'leaflet';
+import { PopovercomponentPageModule } from './popover/popovercomponent/popovercomponent.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -22,13 +25,19 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule,TranslateModule.forRoot({
+  imports: [
+    BrowserModule, 
+    IonicModule.forRoot(), 
+    AppRoutingModule, 
+    HttpClientModule,
+    TranslateModule.forRoot({
     loader: {
       provide: TranslateLoader,
       useFactory: (HttpLoaderFactory),
       deps: [HttpClient]
-    }
-  })],
+    },
+  }),
+  PopovercomponentPageModule],
   providers: [
     GooglePlus,
     NativeStorage,
@@ -40,7 +49,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    Globalization
+    Globalization,
   ],
   bootstrap: [AppComponent]
 })

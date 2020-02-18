@@ -9,7 +9,12 @@ import { AuthService } from '../services/auth.service';
 })
 export class Tab1Page {
 
-  constructor(private translate: TranslateService, private auth:AuthService) { }
+  nombre:any;
+  imagen:any;
+  constructor(private translate: TranslateService, private auth:AuthService) {
+    this.nombre=auth.user.displayName;
+    this.imagen=auth.user.imageURL;
+   }
 
   async ionViewDidEnter() {
     this.translate.get('hellow').subscribe(value => {

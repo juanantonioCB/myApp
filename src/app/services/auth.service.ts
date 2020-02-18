@@ -10,7 +10,7 @@ import { resolve } from 'url';
 })
 export class AuthService {
 
-  private user: User;
+  public user: User;
   constructor(private local: NativeStorage, private google: GooglePlus, private router: Router) { }
 
   public async checkSesion(): Promise<void> {
@@ -39,6 +39,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.google.login({}).then(d => {
         if (d && d.email) {
+          
           let user: User = {
             email: d.email,
             displayName: d.displayName,

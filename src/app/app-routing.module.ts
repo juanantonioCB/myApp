@@ -15,6 +15,14 @@ const routes: Routes = [
   {
     path:'**',redirectTo:''
   },
+  {
+    path: 'location',
+    loadChildren: () => import('./location/location.module').then( m => m.LocationPageModule)
+  },
+  {
+    path: 'popovercomponent',
+    loadChildren: () => import('./popover/popovercomponent/popovercomponent.module').then( m => m.PopovercomponentPageModule)
+  },
 ];
 @NgModule({
   imports: [
