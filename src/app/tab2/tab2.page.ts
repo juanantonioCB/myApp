@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, CameraPosition, MarkerOptions, Marker, Environment, LocationService, MyLocation, Geocoder, GeocoderResult } from '@ionic-native/google-maps';
 import { Incidencia } from '../model/Incidencia';
-
-import {PopovercomponentPage} from '../popover/popovercomponent/popovercomponent.page';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { PopovercomponentPage } from '../popover/popovercomponent/popovercomponent.page';
 import { PopoverController } from '@ionic/angular';
 @Component({
   selector: 'app-tab2',
@@ -12,6 +12,7 @@ import { PopoverController } from '@ionic/angular';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
+
   gmap: GoogleMap;
   image: any;
   incidenciaForm: any;
@@ -20,7 +21,8 @@ export class Tab2Page {
   isRunning: boolean;
   incidencia: Incidencia;
   constructor(private formBuilder: FormBuilder, private router: Router,
-    private popoverController: PopoverController) {
+    private popoverController: PopoverController,
+    private camera: Camera) {
     this.incidencia = {
       nombre: '',
       descripcion: '',
@@ -30,12 +32,39 @@ export class Tab2Page {
     }
   }
 
-  createPopover(){
-    this.popoverController.create({
-      component:PopovercomponentPage,
-      showBackdrop:false,
+  public takePhoto() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
 
-    }).then((popoverElement)=>{
+    this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      this.image = 'data:image/jpeg;base64,' + imageData;
+    }, (err) => {
+      // Handle error
+    });
+  }
+
+
+  createPopover() {
+    this.popoverController.create({
+      component: PopovercomponentPage,
+      showBackdrop: false,
+
+    }).then((popoverElement) => {
+      popoverElement.onDidDismiss().then((d) => {
+        console.log(d)
+        if (d.data) {
+          if (d.data === 'camera') {
+            this.takePhoto();
+          }
+
+        }
+      })
       popoverElement.present();
     })
   }
@@ -81,7 +110,7 @@ export class Tab2Page {
   }
 
   cargarImagen() {
-    
+
   }
 
   loadmap() {

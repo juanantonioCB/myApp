@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Tab2Page } from './tab2.page';
 import { Map, latLng, tileLayer, Layer, marker } from 'leaflet';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 @NgModule({
   entryComponents:[
@@ -20,7 +21,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
     RouterModule.forChild([{ path: '', component: Tab2Page }])
   ],
   declarations: [Tab2Page],
-  providers:[NativeGeocoder]
+  providers:[NativeGeocoder,Camera]
   
 })
 export class Tab2PageModule {}
