@@ -19,4 +19,9 @@ export class PopovercomponentPage implements OnInit {
   lanzarCamara(){
     this.popoverController.dismiss('camera');
   }
+
+  lanzarGaleria(){
+    this.popoverController.dismiss('gallery');
+
+  }
 }

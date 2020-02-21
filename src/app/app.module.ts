@@ -17,6 +17,9 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { LocationPipe } from './location.pipe';
 import { Map, latLng, tileLayer, Layer, marker } from 'leaflet';
 import { PopovercomponentPageModule } from './popover/popovercomponent/popovercomponent.module';
+import { AngularFireModule } from 'angularfire2';
+import { environment } from '../environments/environment';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -26,18 +29,20 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    BrowserModule, 
-    IonicModule.forRoot(), 
-    AppRoutingModule, 
+    BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
     HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
     TranslateModule.forRoot({
-    loader: {
-      provide: TranslateLoader,
-      useFactory: (HttpLoaderFactory),
-      deps: [HttpClient]
-    },
-  }),
-  PopovercomponentPageModule],
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (HttpLoaderFactory),
+        deps: [HttpClient]
+      },
+    }),
+    PopovercomponentPageModule],
   providers: [
     GooglePlus,
     NativeStorage,

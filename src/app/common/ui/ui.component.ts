@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-ui',
@@ -8,7 +8,8 @@ import { LoadingController } from '@ionic/angular';
 })
 export class UiComponent implements OnInit {
 
-  constructor(private loadingController: LoadingController) { }
+  constructor(private loadingController: LoadingController,
+    private toastController: ToastController) { }
   loading: HTMLIonLoadingElement;
   ngOnInit() { }
 
@@ -27,5 +28,16 @@ export class UiComponent implements OnInit {
     }
     this.loading=null;
   }
+
+  public async presentToast(message:string, color:string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color:color
+    });
+    toast.present();
+  }
+
+
 
 }

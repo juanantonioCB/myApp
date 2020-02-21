@@ -13,11 +13,11 @@
   <form [formGroup]="incidenciaForm">
     <ion-item>
       <ion-label position="floating">Título</ion-label>
-      <ion-input formControlName="titulo" type="text"></ion-input>
+      <ion-input [(ngModel)]="titulo" formControlName="titulo" type="text"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Descripción</ion-label>
-      <ion-input formControlName="descripcion" type="text"></ion-input>
+      <ion-input [(ngModel)]="descripcion" formControlName="descripcion" type="text"></ion-input>
     </ion-item>
 
   </form>
