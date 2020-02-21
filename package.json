@@ -81,8 +81,7 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.4.3",
-    "cordova-plugin-ionic-googleplus": "8.2.1"
+    "typescript": "~3.4.3"
   },
   "description": "An Ionic project",
   "cordova": {
@@ -95,11 +94,10 @@
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-nativestorage": {},
       "cordova-plugin-googleplus": {
-        "WEB_APPLICATION_CLIENT_ID": "527882823166-16244sp2c1m53ovkf67e09ui64bmo6bg.apps.googleusercontent.com",
-        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.527882823166-16244sp2c1m53ovkf67e09ui64bmo6bg"
+        "WEB_APPLICATION_CLIENT_ID": "452681644208-vaa0sl5859roo3qk6o9b41tge7i1ag01.apps.googleusercontent.com",
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.452681644208-vaa0sl5859roo3qk6o9b41tge7i1ag01"
       },
       "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-ionic-googleplus": {},
       "cordova-plugin-nativegeocoder": {},
       "cordova-plugin-camera": {},
       "cordova-plugin-googlemaps": {},
