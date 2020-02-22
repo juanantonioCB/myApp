@@ -10,6 +10,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { UiComponent } from '../common/ui/ui.component';
 
+
 @NgModule({
   entryComponents:[
 

@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button fill="clear" slot="start" (click)="goBack()">
+    <ion-button fill="clear" slot="start">
       <ion-icon name="arrow-back"></ion-icon>
     </ion-button>
     <ion-title>Pickup Location</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-    <ion-item style="cursor: pointer" (click)="locatePosition()">
+    <ion-item style="cursor: pointer">
         <ion-button fill="clear">
             <ion-icon slot="start" name="map"></ion-icon>
             Locate Position
@@ -18,7 +18,7 @@
     <ion-label position="stacked">Address</ion-label>
 <ion-textarea [(ngModel)]="address" type="text" style="margin-top:20px;"></ion-textarea>
   </ion-item>
-<ion-button shape="round" expand="block" (click)="confirmPickupLocation()">Confirm Pickup Location</ion-button>
+<ion-button shape="round" expand="block">Confirm Pickup Location</ion-button>
 
 <div id="mapId" style="height:200px"></div>
 

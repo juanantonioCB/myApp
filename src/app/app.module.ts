@@ -20,13 +20,15 @@ import { PopovercomponentPageModule } from './popover/popovercomponent/popoverco
 import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { UiComponent } from './common/ui/ui.component';
+
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,UiComponent,LocationPipe],
   entryComponents: [],
   imports: [
     BrowserModule,
@@ -51,10 +53,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     TranslateService,
     HttpClient,
     HttpClientModule,
+    
     StatusBar,
     SplashScreen,
+
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    Globalization,
+    Globalization
   ],
   bootstrap: [AppComponent]
 })

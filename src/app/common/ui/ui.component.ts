@@ -22,22 +22,70 @@ export class UiComponent implements OnInit {
     await this.loading.present();
   }
 
-  public async hideLoading(){
-    if(this.loading){
+  public async hideLoading() {
+    if (this.loading) {
       await this.loading.dismiss();
     }
-    this.loading=null;
+    this.loading = null;
   }
 
-  public async presentToast(message:string, color:string) {
+  public async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
       duration: 2000,
-      color:color
+      color: color
     });
     toast.present();
   }
 
+
+
+  generateImage(img: string,
+    quality: number = 1,
+    MAX_WIDTH: number,
+    MAX_HEIGHT: number) {
+    return new Promise((resolve, reject) => {
+      const canvas: any = document.createElement('canvas');
+      const image = new Image();
+      image.crossOrigin = 'Anonymous';
+      image.src = img;
+      image.onload = () => {
+        let width = image.width;
+        let height = image.height;
+        if (!MAX_HEIGHT) {
+          MAX_HEIGHT = image.height;
+        }
+        if (!MAX_WIDTH) {
+          MAX_WIDTH = image.width;
+        }
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(image, 0, 0, width, height);
+        const dataUrl = canvas
+          .toDataURL('image/jpeg', quality)
+          .replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
+        resolve(dataUrl);
+      };
+      image.onerror = e => {
+        reject(e);
+      };
+    });
+  }
+  getImageFromBase64(base64: string) {
+    return 'data:image/jpeg;base64,' + base64;
+  }
 
 
 }

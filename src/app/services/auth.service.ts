@@ -3,15 +3,21 @@ import { User } from '../model/User';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Router } from '@angular/router';
-import { resolve } from 'url';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  public user: User;
-  constructor(private local: NativeStorage, private google: GooglePlus, private router: Router) { }
+  public user: User/*= {
+    email: 'test@test.com',
+    displayName: 'test',
+    imageURL: '',
+    userId: '1'
+  }*/;
+  constructor(private local: NativeStorage, private google: GooglePlus, private router: Router) { 
+    
+  }
 
   public async checkSesion(): Promise<void> {
     if (!this.user) {
@@ -36,12 +42,10 @@ export class AuthService {
   }
 
   public loginGoogle():Promise<boolean> {
-    console.log('asddfa');
     return new Promise((resolve, reject) => {
       this.google.login({}).then(d => {
         console.log(d);
         if (d && d.email) {
-          
           let user: User = {
             email: d.email,
             displayName: d.displayName,
