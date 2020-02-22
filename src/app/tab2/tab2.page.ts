@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, CameraPosition, MarkerOptions, Marker, Environment, LocationService, MyLocation, Geocoder, GeocoderResult } from '@ionic-native/google-maps';
 import { Incidencia } from '../model/Incidencia';
@@ -19,11 +19,9 @@ export class Tab2Page {
 
   gmap: GoogleMap;
   image: any;
-  incidenciaForm: any;
+  incidenciaForm: FormGroup;
   pickupLocation: string;
   ubicacion: string;
-  titulo: string;
-  descripcion: string;
   isRunning: boolean;
   incidencia: Incidencia;
   constructor(private formBuilder: FormBuilder, private router: Router,
@@ -36,9 +34,18 @@ export class Tab2Page {
       nombre: '',
       descripcion: '',
       imagen: '',
-      latitud: 0,
-      longitud: 0
+      latitud: undefined,
+      longitud: undefined
     }
+  }
+
+  ngOnInit() {
+    this.image = 'assets/no_image.png';
+    this.incidenciaForm = this.formBuilder.group({
+      titulo: ['', [Validators.required, Validators.minLength(5)]],
+      descripcion: ['', [Validators.required, Validators.minLength(10)]]
+    });
+    this.loadmap();
   }
 
   public choosePhoto() {
@@ -72,7 +79,6 @@ export class Tab2Page {
     });
   }
 
-
   createPopover() {
     this.popoverController.create({
       component: PopovercomponentPage,
@@ -88,34 +94,31 @@ export class Tab2Page {
           if (d.data === 'gallery') {
             this.choosePhoto();
           }
-
         }
       })
       popoverElement.present();
     })
   }
 
-  ngOnInit() {
-    this.image = 'assets/no_image.png';
-    this.incidenciaForm = this.formBuilder.group({
-      titulo: ['', Validators.minLength(5)],
-      descripcion: ['']
-    });
-    this.loadmap();
-  }
+
 
 
   async crearIncidencia() {
-    this.incidencia.nombre = this.titulo;
-    this.incidencia.descripcion = this.descripcion;
-    this.incidencia.imagen = this.image;
+
+    console.log('TEST'+this.incidenciaForm.get('titulo').value);
+    this.incidencia.nombre = this.incidenciaForm.get('titulo').value;
+    this.incidencia.descripcion = this.incidenciaForm.get('descripcion').value;
+    if (this.image != 'assets/no_image.png') {
+      this.incidencia.imagen = this.image;
+    }
+
     await this.ui.presentLoading();
     this.incidenciaDB.addIncidencia(this.incidencia).then(async res => {
       console.log(res);
-      await this.ui.presentToast('Incidencia agregada correctamente','success');
+      await this.ui.presentToast('Incidencia agregada correctamente', 'success');
     }
     ).catch(async e => {
-      await this.ui.presentToast('Ha ocurrido un error','danger');
+      await this.ui.presentToast('Ha ocurrido un error', 'danger');
     });
     await this.ui.hideLoading();
 
@@ -155,6 +158,8 @@ export class Tab2Page {
 
   loadmap() {
     LocationService.getMyLocation().then((myLocation: MyLocation) => {
+      this.incidencia.latitud=myLocation.latLng.lat;
+      this.incidencia.longitud=myLocation.latLng.lng;
       let options: GoogleMapOptions = {
         camera: {
           target: myLocation.latLng,

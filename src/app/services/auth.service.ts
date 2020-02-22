@@ -45,7 +45,7 @@ export class AuthService {
           let user: User = {
             email: d.email,
             displayName: d.displayName,
-            imageURL: d.imageURL,
+            imageURL: d.imageUrl,
             userId: d.userId
           }
           this.user = user;

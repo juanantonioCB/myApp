@@ -13,13 +13,12 @@
   <form [formGroup]="incidenciaForm">
     <ion-item>
       <ion-label position="floating">Título</ion-label>
-      <ion-input [(ngModel)]="titulo" formControlName="titulo" type="text"></ion-input>
+      <ion-input formControlName="titulo" type="text"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Descripción</ion-label>
-      <ion-input [(ngModel)]="descripcion" formControlName="descripcion" type="text"></ion-input>
+      <ion-input formControlName="descripcion" type="text"></ion-input>
     </ion-item>
-
   </form>
   <ion-item>
     <ion-label position="floating">Ubicación</ion-label>
@@ -29,7 +28,7 @@
   <div id="map_canvas" style="width:100%; height:200px;"></div>
 
 
-  <ion-button expand="full" color="primary" (click)="crearIncidencia()">Abrir Incidencia</ion-button>
+  <ion-button expand="full" color="primary" (click)="crearIncidencia()" [disabled]="incidenciaForm.invalid">Abrir Incidencia</ion-button>
 
 
 </ion-content>
