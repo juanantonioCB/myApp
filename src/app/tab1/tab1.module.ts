@@ -8,9 +8,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
 import { UiComponent } from '../common/ui/ui.component';
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   imports: [
+    PipesModule,
     IonicModule,
     CommonModule,
     FormsModule,

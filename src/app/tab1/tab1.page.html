@@ -1,29 +1,36 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      Incidencias
-    </ion-title>
-    <ion-button (click)="logout()">Cerrar Sesión</ion-button>
+    Incidencias
+
+    <ion-button size="small" (click)="logout()">
+      <ion-icon name="exit"></ion-icon>
+      Cerrar Sesión
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  
+
   <ion-item>
     <ion-avatar slot="start">
       <img [src]="imagen">
     </ion-avatar>
-    <ion-label>{{nombre}}</ion-label>
+    <ion-label>{{nombre}}
+      <p>{{email}}</p>
+    </ion-label>
   </ion-item>
   <ion-button color="{{reproduciendo ? 'danger' : 'primary'}}" (click)="radio()">
     <ion-icon name="radio"></ion-icon>
     {{reproduciendo ? 'Apagar Radio' : 'Encender Radio'}}
-    
+
   </ion-button>
 
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-searchbar placeHolder="Buscar incidencia" animated (ionChange)="buscarIncidencia($event)"></ion-searchbar>
 
-  
-  <ion-list>
+  <ion-list class="fadeIn">
     <ng-container *ngIf="!incidencias || incidencias.length == 0">
       <div *ngFor="let n of [0,1,2]" padding>
         <ion-skeleton-text></ion-skeleton-text>
@@ -34,8 +41,8 @@
     </ng-container>
 
 
-    
-    <ion-item-sliding *ngFor="let incidencia of incidencias">
+
+    <ion-item-sliding *ngFor="let incidencia of incidencias | filtro:textoBuscar">
       <ion-item lines="inset" button [routerLink]="['/tabs/tab2',incidencia.id]">
 
         <ion-thumbnail slot="start">
@@ -52,15 +59,14 @@
         </ion-item-option>
       </ion-item-options>
 
-      <ion-item-options side="start" (ionSwipe)="edit()">
-        <ion-item-option (click)="edit()" color="primary" expandable>
+      <ion-item-options side="start" (ionSwipe)="edit(incidencia.id)">
+        <ion-item-option (click)="edit(incidencia.id)" color="primary" expandable>
           <ion-icon name="brush"></ion-icon>
         </ion-item-option>
       </ion-item-options>
 
     </ion-item-sliding>
   </ion-list>
-
 
 
 </ion-content>

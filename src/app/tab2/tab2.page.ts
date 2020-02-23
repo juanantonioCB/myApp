@@ -12,8 +12,6 @@ import { UiComponent } from '../common/ui/ui.component';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
 import { Tab1Page } from '../tab1/tab1.page';
 
-
-
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -28,7 +26,7 @@ export class Tab2Page {
   ubicacion: string;
   isRunning: boolean;
   incidencia: Incidencia;
-  id:string;
+  id: string;
   constructor(private formBuilder: FormBuilder, private router: Router,
     private popoverController: PopoverController,
     private ui: UiComponent,
@@ -36,7 +34,7 @@ export class Tab2Page {
     private incidenciaDB: IncidenciasService,
     private imagePicker: ImagePicker,
     private route: ActivatedRoute,
-    private navCtrl:NavController
+    private navCtrl: NavController
   ) {
     this.incidencia = {
       nombre: undefined,
@@ -45,7 +43,6 @@ export class Tab2Page {
       latitud: 0,
       longitud: 0
     };
-    
   }
 
   async ngOnInit() {
@@ -54,13 +51,13 @@ export class Tab2Page {
       titulo: ['', [Validators.required, Validators.minLength(5)]],
       descripcion: ['', [Validators.required, Validators.minLength(10)]]
     });
-    
-   await this.loadIncidencia();
     this.loadmap();
-    console.log("ngoninit");
+    await this.loadIncidencia();
   }
 
-  
+  ionViewWillEnter() {
+    //this.incidenciaForm.reset();
+  }
 
   async loadIncidencia() {
     this.id = this.route.snapshot.params['id'];
@@ -70,19 +67,18 @@ export class Tab2Page {
         ///////////////////
         ///////////////////
         this.incidencia = res;
-        this.incidenciaForm=this.formBuilder.group({
-          titulo:[res.nombre],
-          descripcion:[res.descripcion]
-          
+        this.incidenciaForm = this.formBuilder.group({
+          titulo: [res.nombre],
+          descripcion: [res.descripcion]
         });
-        this.incidencia.latitud=res.latitud;
-        this.incidencia.longitud=res.longitud;
-        this.image=res.imagen;
+        this.incidencia.latitud = res.latitud;
+        this.incidencia.longitud = res.longitud;
+        this.image = res.imagen;
+        this.loadUbicacion(res.latitud, res.longitud);
       });
-      console.log('>>>>' + this.incidencia.nombre);
+      
     }
   }
-
 
   public choosePhoto() {
     let options = {
@@ -105,7 +101,6 @@ export class Tab2Page {
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE
     }
-
     this.camera.getPicture(options).then(async (imageData) => {
       await this.ui.generateImage('data:image/jpeg;base64,' + imageData, 1, 300, 300).then(im => {
         this.image = 'data:image/jpeg;base64,' + im;
@@ -113,19 +108,16 @@ export class Tab2Page {
         console.log('ERROR DE COMPRESIÓN' + err);
         this.image === undefined;
       });
-
     }, (err) => {
       console.log('ERROR EN LA CÁMARA ' + err);
       this.ui.presentToast('Ha ocurrido un error al cargar la cámara', 'danger');
     });
   }
 
-
   createPopover() {
     this.popoverController.create({
       component: PopovercomponentPage,
       showBackdrop: false,
-
     }).then((popoverElement) => {
       popoverElement.onDidDismiss().then((d) => {
         if (d.data) {
@@ -144,15 +136,13 @@ export class Tab2Page {
   async crearIncidencia() {
     this.incidencia.nombre = this.incidenciaForm.get('titulo').value;
     this.incidencia.descripcion = this.incidenciaForm.get('descripcion').value;
-    //if (this.image != 'assets/no_image.png') {
     this.incidencia.imagen = this.image;
-    //}
     await this.ui.presentLoading();
-    if(this.id){
-      await this.incidenciaDB.updateIncidencia(this.incidencia,this.id).then(async res=>{
+    if (this.id) {
+      await this.incidenciaDB.updateIncidencia(this.incidencia, this.id).then(async res => {
         await this.ui.presentToast('Incidencia actualizada correctamente', 'success');
       });
-    }else{
+    } else {
       this.incidenciaDB.addIncidencia(this.incidencia).then(async res => {
         await this.ui.presentToast('Incidencia agregada correctamente', 'success');
       }
@@ -161,19 +151,15 @@ export class Tab2Page {
         await this.ui.presentToast('Ha ocurrido un error', 'danger');
       });
     }
-    
     this.incidenciaForm.reset();
     this.ubicacion = '';
     this.image = 'assets/no_image.png';
     await this.ui.hideLoading();
-
     this.router.navigate([Tab1Page]);
-   
   }
 
   cargarUbicacion() {
     // Address -> latitude,longitude
-    console.log('oojjoj');
     Geocoder.geocode({
       "address": this.ubicacion
     }).then((results: GeocoderResult[]) => {
@@ -203,19 +189,31 @@ export class Tab2Page {
 
   }
 
+
+  loadUbicacion(lat: number, lng: number) {
+    let marker: Marker = this.gmap.addMarkerSync({
+      'position': {
+        lat: lat,
+        lng: lng
+      },
+      'title': JSON.stringify('Mi Ubicación actual')
+    });
+    this.gmap.animateCamera({
+      'target': marker.getPosition(),
+      'zoom': 17
+    }).then(() => {
+      marker.showInfoWindow();
+      this.isRunning = false;
+    });
+  }
+
+
   loadmap() {
     LocationService.getMyLocation().then(async (myLocation: MyLocation) => {
       this.incidencia.latitud = myLocation.latLng.lat;
       this.incidencia.longitud = myLocation.latLng.lng;
-      let options: GoogleMapOptions = {
-        camera: {
-          target: myLocation.latLng,
-          zoom: 15
-        }
-      };
 
-      this.gmap = await GoogleMaps.create('map_canvas', options);
-
+      this.gmap = await GoogleMaps.create('map_canvas');
       let marker: Marker = this.gmap.addMarkerSync({
         'position': myLocation.latLng,
         'title': JSON.stringify('Mi Ubicación actual')
