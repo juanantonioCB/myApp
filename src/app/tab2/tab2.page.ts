@@ -1,11 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions, CameraPosition, MarkerOptions, Marker, Environment, LocationService, MyLocation, Geocoder, GeocoderResult } from '@ionic-native/google-maps';
 import { Incidencia } from '../model/Incidencia';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { PopovercomponentPage } from '../popover/popovercomponent/popovercomponent.page';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, NavController } from '@ionic/angular';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { IncidenciasService } from '../servicios/incidencias.service';
 import { UiComponent } from '../common/ui/ui.component';
@@ -28,12 +28,15 @@ export class Tab2Page {
   ubicacion: string;
   isRunning: boolean;
   incidencia: Incidencia;
+  id:string;
   constructor(private formBuilder: FormBuilder, private router: Router,
     private popoverController: PopoverController,
     private ui: UiComponent,
     private camera: Camera,
     private incidenciaDB: IncidenciasService,
     private imagePicker: ImagePicker,
+    private route: ActivatedRoute,
+    private navCtrl:NavController
   ) {
     this.incidencia = {
       nombre: undefined,
@@ -41,16 +44,43 @@ export class Tab2Page {
       imagen: '',
       latitud: 0,
       longitud: 0
-    }
+    };
+    
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.image = 'assets/no_image.png';
     this.incidenciaForm = this.formBuilder.group({
       titulo: ['', [Validators.required, Validators.minLength(5)]],
       descripcion: ['', [Validators.required, Validators.minLength(10)]]
     });
+    
+   await this.loadIncidencia();
     this.loadmap();
+    console.log("ngoninit");
+  }
+
+  
+
+  async loadIncidencia() {
+    this.id = this.route.snapshot.params['id'];
+    console.log(this.id);
+    if (this.id) {
+      this.incidenciaDB.getIncidencia(this.id).subscribe(res => {
+        ///////////////////
+        ///////////////////
+        this.incidencia = res;
+        this.incidenciaForm=this.formBuilder.group({
+          titulo:[res.nombre],
+          descripcion:[res.descripcion]
+          
+        });
+        this.incidencia.latitud=res.latitud;
+        this.incidencia.longitud=res.longitud;
+        this.image=res.imagen;
+      });
+      console.log('>>>>' + this.incidencia.nombre);
+    }
   }
 
 
@@ -85,7 +115,7 @@ export class Tab2Page {
       });
 
     }, (err) => {
-      console.log('ERROR EN LA CÁMARA '+err);
+      console.log('ERROR EN LA CÁMARA ' + err);
       this.ui.presentToast('Ha ocurrido un error al cargar la cámara', 'danger');
     });
   }
@@ -115,23 +145,30 @@ export class Tab2Page {
     this.incidencia.nombre = this.incidenciaForm.get('titulo').value;
     this.incidencia.descripcion = this.incidenciaForm.get('descripcion').value;
     //if (this.image != 'assets/no_image.png') {
-      this.incidencia.imagen = this.image;
+    this.incidencia.imagen = this.image;
     //}
     await this.ui.presentLoading();
-    this.incidenciaDB.addIncidencia(this.incidencia).then(async res => {
-      await this.ui.presentToast('Incidencia agregada correctamente', 'success');
+    if(this.id){
+      await this.incidenciaDB.updateIncidencia(this.incidencia,this.id).then(async res=>{
+        await this.ui.presentToast('Incidencia actualizada correctamente', 'success');
+      });
+    }else{
+      this.incidenciaDB.addIncidencia(this.incidencia).then(async res => {
+        await this.ui.presentToast('Incidencia agregada correctamente', 'success');
+      }
+      ).catch(async e => {
+        console.log(e);
+        await this.ui.presentToast('Ha ocurrido un error', 'danger');
+      });
     }
-    ).catch(async e => {
-      console.log(e);
-      await this.ui.presentToast('Ha ocurrido un error', 'danger');
-    });
+    
     this.incidenciaForm.reset();
-    this.ubicacion='';
-    this.image='assets/no_image.png';
+    this.ubicacion = '';
+    this.image = 'assets/no_image.png';
     await this.ui.hideLoading();
 
     this.router.navigate([Tab1Page]);
-
+   
   }
 
   cargarUbicacion() {
@@ -176,7 +213,7 @@ export class Tab2Page {
           zoom: 15
         }
       };
-      
+
       this.gmap = await GoogleMaps.create('map_canvas', options);
 
       let marker: Marker = this.gmap.addMarkerSync({

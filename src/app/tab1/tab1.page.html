@@ -8,28 +8,59 @@
 </ion-header>
 
 <ion-content>
+  
   <ion-item>
     <ion-avatar slot="start">
       <img [src]="imagen">
     </ion-avatar>
     <ion-label>{{nombre}}</ion-label>
   </ion-item>
-  <ion-button (click)="radio()">Encender Radio</ion-button>
+  <ion-button color="{{reproduciendo ? 'danger' : 'primary'}}" (click)="radio()">
+    <ion-icon name="radio"></ion-icon>
+    {{reproduciendo ? 'Apagar Radio' : 'Encender Radio'}}
+    
+  </ion-button>
 
 
+  
   <ion-list>
+    <ng-container *ngIf="!incidencias || incidencias.length == 0">
+      <div *ngFor="let n of [0,1,2]" padding>
+        <ion-skeleton-text></ion-skeleton-text>
+        <p>
+          <ion-skeleton-text class="fake-skeleton"></ion-skeleton-text>
+        </p>
+      </div>
+    </ng-container>
+
+
+    
     <ion-item-sliding *ngFor="let incidencia of incidencias">
-      <ion-item>
+      <ion-item lines="inset" button [routerLink]="['/tabs/tab2',incidencia.id]">
 
         <ion-thumbnail slot="start">
           <img src={{incidencia.imagen}}>
         </ion-thumbnail>
         <ion-label>
-          
           {{incidencia.nombre}}
+          <p>{{incidencia.descripcion}}</p>
         </ion-label>
       </ion-item>
+      <ion-item-options side="end" (ionSwipe)="delete(incidencia.id)">
+        <ion-item-option (click)="delete(incidencia.id)" color="danger" expandable>
+          <ion-icon name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
+      <ion-item-options side="start" (ionSwipe)="edit()">
+        <ion-item-option (click)="edit()" color="primary" expandable>
+          <ion-icon name="brush"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
     </ion-item-sliding>
   </ion-list>
+
+
 
 </ion-content>

@@ -36,18 +36,38 @@ export class Tab1Page {
   async radio() {
     if(!this.reproduciendo){
       await this.ui.presentLoading();
-      this.nativeAudio.preloadSimple('uniqueId1', 'http://20423.live.streamtheworld.com/LOS40.mp3');
+      this.nativeAudio.preloadSimple('uniqueId1', 'http://radioclasica.rtveradio.cires21.com/radioclasica/mp3/icecast.audio');
       this.nativeAudio.play('uniqueId1').then(d=>{
         this.reproduciendo=true;
+        
       });
       await this.ui.hideLoading();
     }else{
       await this.ui.presentLoading();
       await this.nativeAudio.stop('uniqueId1');
+      await this.nativeAudio.unload('uniqueId1');
+
       this.reproduciendo=false;
       await this.ui.hideLoading();
     }
 
+  }
+
+  edit(){
+    console.log('edit');
+  }
+
+  async delete(id:any){
+    console.log('delete');
+    console.log(id);
+    await this.ui.presentLoading();
+    this.db.removeIncidencia(id).then(r=>{
+      this.ui.presentToast('Incidencia eliminada correctamente','success');
+    }).catch(err=>{
+      console.log(err);
+      this.ui.presentToast('Error al borrar la incidencia','danger');
+    });
+    await this.ui.hideLoading();
   }
 
   public logout() {
