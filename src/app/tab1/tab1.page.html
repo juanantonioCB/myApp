@@ -1,12 +1,9 @@
 <ion-header>
-  <ion-toolbar>
-    Incidencias
-
-    <ion-button  size="small" (click)="logout()">
-      <ion-icon name="exit"></ion-icon>
-      Cerrar Sesión
-    </ion-button>
-  </ion-toolbar>
+  Mis Incidencias
+  <ion-button  size="small" (click)="logout()">
+    <ion-icon name="exit"></ion-icon>
+    Cerrar Sesión
+  </ion-button>
 </ion-header>
 
 <ion-content>
@@ -19,7 +16,7 @@
       <p>{{email}}</p>
     </ion-label>
   </ion-item>
-  <ion-button color="{{reproduciendo ? 'danger' : 'primary'}}" (click)="radio()">
+  <ion-button class="animated fadeIn infinite" expand="block" color="{{reproduciendo ? 'danger' : 'primary'}}" (click)="radio()">
     <ion-icon name="radio"></ion-icon>
     {{reproduciendo ? 'Apagar Radio' : 'Encender Radio'}}
 
@@ -42,9 +39,9 @@
 
 
 
-    <ion-item-sliding *ngFor="let incidencia of incidencias | filtro:textoBuscar">
-      <ion-item lines="inset" button [routerLink]="['/tabs/tab2',incidencia.id]">
-
+    <ion-item-sliding *ngFor="let incidencia of incidenciasPage | filtro:textoBuscar">
+      <ion-item  lines="inset" button [routerLink]="['/tabs/tab2',incidencia.id]">
+        
         <ion-thumbnail slot="start">
           <img src={{incidencia.imagen}}>
         </ion-thumbnail>
@@ -68,5 +65,5 @@
     </ion-item-sliding>
   </ion-list>
 
-
+  
 </ion-content>

@@ -4,9 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LoginPageRoutingModule } from './login-routing.module';
+import { RegisterPageRoutingModule } from './register-routing.module';
 
-import { LoginPage } from './login.page';
+import { RegisterPage } from './register.page';
+import { AuthService } from '../services/auth.service';
 import { UiComponent } from '../common/ui/ui.component';
 
 @NgModule({
@@ -14,11 +15,11 @@ import { UiComponent } from '../common/ui/ui.component';
     CommonModule,
     FormsModule,
     IonicModule,
-    LoginPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
     
+    RegisterPageRoutingModule
   ],
-  declarations: [LoginPage],
-  providers:[UiComponent]
+  providers:[AuthService,UiComponent],
+  declarations: [RegisterPage]
 })
-export class LoginPageModule {}
+export class RegisterPageModule {}

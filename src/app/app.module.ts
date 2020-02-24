@@ -21,6 +21,8 @@ import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { UiComponent } from './common/ui/ui.component';
+import { FirebaseAuthentication } from '@ionic-native/firebase-authentication/ngx';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -34,6 +36,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    AngularFireModule,
+    AngularFireAuthModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
@@ -53,7 +57,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TranslateService,
     HttpClient,
     HttpClientModule,
-    
+    FirebaseAuthentication,
     StatusBar,
     SplashScreen,
 

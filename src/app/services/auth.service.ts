@@ -3,7 +3,9 @@ import { User } from '../model/User';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Router } from '@angular/router';
-
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuth } from '@angular/fire/auth'
+import {auth} from 'firebase/app';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,8 +17,35 @@ export class AuthService {
     imageURL: '',
     userId: '1'
   }*/;
-  constructor(private local: NativeStorage, private google: GooglePlus, private router: Router) { 
+  constructor(private fAuth:AngularFireAuth,
+    private local: NativeStorage, private google: GooglePlus, private router: Router) { 
     
+  }
+
+  doRegister(email:string,password:string,name:string){
+    return this.fAuth.auth.createUserWithEmailAndPassword(email,password).then(r=>{
+      let user: User = {
+        email: r.user.email,
+        displayName: name,
+        imageURL: '',
+        userId: r.user.uid
+      }
+      this.user = user;
+      this.saveSession(user);
+    });
+  }
+
+  doLogin(email:string,password:string){
+    return this.fAuth.auth.signInWithEmailAndPassword(email,password).then(r=>{
+      let user: User = {
+        email: r.user.email,
+        displayName: r.user.displayName,
+        imageURL: '',
+        userId: r.user.uid
+      }
+      this.user = user;
+      this.saveSession(user);
+    })
   }
 
   public async checkSesion(): Promise<void> {
@@ -39,6 +68,10 @@ export class AuthService {
     } else {
       await this.local.remove('user');
     }
+  }
+
+  public loginEmail(name:string,password:string){
+
   }
 
   public loginGoogle():Promise<boolean> {

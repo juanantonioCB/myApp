@@ -21,6 +21,9 @@ export class Tab1Page {
   textoBuscar: string = '';
   reproduciendo: boolean;
   incidencias: Incidencia[];
+  incidenciasPage: Incidencia[];
+  private readonly offset: number = 5;
+  private index: number = 0;
   constructor(private translate: TranslateService, private auth: AuthService,
     private nativeAudio: NativeAudio,
     private db: IncidenciasService,
@@ -34,7 +37,28 @@ export class Tab1Page {
   ngOnInit() {
     this.db.getIncidencias().subscribe(res => {
       this.incidencias = res;
+      this.incidenciasPage = this.incidencias.slice(this.index, this.offset + this.index);
+      this.index += this.offset;
     });
+
+  }
+
+  loadData(event) {
+    if(this.incidenciasPage.length<this.incidencias.length){
+      setTimeout(() => {
+        let news = this.incidencias.slice(this.index, this.offset + this.index);
+        this.index += this.offset;
+        for (let i = 0; i < news.length; i++) {
+          this.incidenciasPage.push(news[i]);
+        }
+        event.target.complete;
+  
+        if (this.incidenciasPage.length === this.incidencias.length) {
+          event.target.disabled;
+        }
+      }, 1000);
+    }
+    
   }
 
   async radio() {
@@ -63,7 +87,7 @@ export class Tab1Page {
     this.db.getIncidencias().subscribe(res => {
       this.incidencias = res;
       event.target.complete();
-    })
+    });
   }
 
   edit(id: string) {

@@ -222,7 +222,6 @@ export class Tab2Page {
     LocationService.getMyLocation().then(async (myLocation: MyLocation) => {
       this.incidencia.latitud = myLocation.latLng.lat;
       this.incidencia.longitud = myLocation.latLng.lng;
-
       this.gmap = await GoogleMaps.create('map_canvas');
       let marker: Marker = this.gmap.addMarkerSync({
         'position': myLocation.latLng,
@@ -235,6 +234,8 @@ export class Tab2Page {
         marker.showInfoWindow();
         this.isRunning = false;
       });
+    }).catch(err=>{
+      console.log(err);
     });
   }
 

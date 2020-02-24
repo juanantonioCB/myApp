@@ -3,10 +3,15 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService } from './services/auth-guard.service';
 
 const routes: Routes = [
+  
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
     canActivate:[AuthGuardService]
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
   {
     path: 'login',
@@ -23,6 +28,8 @@ const routes: Routes = [
     path: 'popovercomponent',
     loadChildren: () => import('./popover/popovercomponent/popovercomponent.module').then( m => m.PopovercomponentPageModule)
   },
+  
+
 ];
 @NgModule({
   imports: [
