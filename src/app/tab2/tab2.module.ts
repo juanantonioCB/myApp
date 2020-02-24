@@ -9,6 +9,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { UiComponent } from '../common/ui/ui.component';
+import { File } from '@ionic-native/file/ngx';
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import { UiComponent } from '../common/ui/ui.component';
     RouterModule.forChild([{ path: '', component: Tab2Page }])
   ],
   declarations: [Tab2Page],
-  providers:[NativeGeocoder,Camera,ImagePicker,UiComponent]
+  providers:[NativeGeocoder,Camera,ImagePicker,UiComponent,File]
   
 })
 export class Tab2PageModule {}

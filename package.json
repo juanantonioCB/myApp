@@ -13,6 +13,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/animations": "^9.0.2",
     "@angular/common": "~8.1.2",
     "@angular/core": "~8.1.2",
     "@angular/forms": "~8.1.2",
@@ -39,6 +40,7 @@
     "@ngx-translate/http-loader": "^4.0.0",
     "@types/leaflet": "^1.5.8",
     "angularfire2": "^5.4.2",
+    "animate.css": "^3.7.2",
     "cordova-android": "^8.1.0",
     "cordova-browser": "^6.0.0",
     "cordova-plugin-camera": "^4.1.0",
@@ -58,6 +60,7 @@
     "leaflet": "^1.6.0",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
+    "web-animations-js": "^2.3.2",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
@@ -91,7 +94,8 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.4.3"
+    "typescript": "~3.4.3",
+    "cordova-plugin-ionic-googleplus": "8.2.1"
   },
   "description": "An Ionic project",
   "cordova": {
@@ -116,7 +120,11 @@
       "cordova-plugin-file": {},
       "cordova-plugin-media-capture": {},
       "cordova-plugin-streaming-media": {},
-      "cordova-plugin-nativeaudio": {}
+      "cordova-plugin-nativeaudio": {},
+      "cordova-plugin-ionic-googleplus": {
+        "WEB_APPLICATION_CLIENT_ID": "452681644208-vaa0sl5859roo3qk6o9b41tge7i1ag01.apps.googleusercontent.com",
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.527882823166-16244sp2c1m53ovkf67e09ui64bmo6bg"
+      }
     },
     "platforms": [
       "browser",

@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="juanantonio.myApp" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>MyApp</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content original-src="index.html" src="http://localhost:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -100,7 +100,9 @@
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-ionic-webview" spec="^4.0.0" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
-    <variable name="WEB_APPLICATION_CLIENT_ID" value="452681644208-vaa0sl5859roo3qk6o9b41tge7i1ag01.apps.googleusercontent.com" />
-    <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.527882823166-16244sp2c1m53ovkf67e09ui64bmo6bg" />
+    <plugin name="cordova-plugin-ionic-googleplus" spec="8.2.1">
+        <variable name="WEB_APPLICATION_CLIENT_ID" value="452681644208-vaa0sl5859roo3qk6o9b41tge7i1ag01.apps.googleusercontent.com" />
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.527882823166-16244sp2c1m53ovkf67e09ui64bmo6bg" />
+    </plugin>
     <allow-navigation href="http://localhost:8100" sessionid="d43331bf" />
 </widget>

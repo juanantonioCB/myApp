@@ -8,7 +8,7 @@ import { IncidenciasService } from '../servicios/incidencias.service';
 import { Incidencia } from '../model/Incidencia';
 import { Router } from '@angular/router';
 import { Tab2Page } from '../tab2/tab2.page';
-
+import { trigger, state, style, animate, transition } from "@angular/animations";
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -17,68 +17,68 @@ import { Tab2Page } from '../tab2/tab2.page';
 export class Tab1Page {
   nombre: any;
   imagen: any;
-  email:any;
-  textoBuscar:string='';
-  reproduciendo:boolean;
-  incidencias:Incidencia[];
+  email: any;
+  textoBuscar: string = '';
+  reproduciendo: boolean;
+  incidencias: Incidencia[];
   constructor(private translate: TranslateService, private auth: AuthService,
     private nativeAudio: NativeAudio,
-    private db:IncidenciasService,
-    private router:Router,
-    private ui:UiComponent) {
+    private db: IncidenciasService,
+    private router: Router,
+    private ui: UiComponent) {
     this.nombre = auth.user.displayName;
     this.imagen = auth.user.imageURL;
-    this.email=auth.user.email;
+    this.email = auth.user.email;
   }
 
-  ngOnInit(){
-    this.db.getIncidencias().subscribe(res=>{
-      this.incidencias=res;
+  ngOnInit() {
+    this.db.getIncidencias().subscribe(res => {
+      this.incidencias = res;
     });
   }
 
   async radio() {
-    if(!this.reproduciendo){
+    if (!this.reproduciendo) {
       await this.ui.presentLoading();
       this.nativeAudio.preloadSimple('uniqueId1', 'http://radioclasica.rtveradio.cires21.com/radioclasica/mp3/icecast.audio');
-      this.nativeAudio.play('uniqueId1').then(d=>{
-        this.reproduciendo=true;
+      this.nativeAudio.play('uniqueId1').then(d => {
+        this.reproduciendo = true;
       });
       await this.ui.hideLoading();
-    }else{
+    } else {
       await this.ui.presentLoading();
       await this.nativeAudio.stop('uniqueId1');
       await this.nativeAudio.unload('uniqueId1');
-      this.reproduciendo=false;
+      this.reproduciendo = false;
       await this.ui.hideLoading();
     }
   }
 
-  buscarIncidencia(event){
-    this.textoBuscar=event.target.value;
+  buscarIncidencia(event) {
+    this.textoBuscar = event.target.value;
   }
 
   doRefresh(event) {
-      console.log('Async operation has ended');
-      this.db.getIncidencias().subscribe(res=>{
-        this.incidencias=res;
-        event.target.complete();
-      })
+    console.log('Async operation has ended');
+    this.db.getIncidencias().subscribe(res => {
+      this.incidencias = res;
+      event.target.complete();
+    })
   }
 
-  edit(id:string){
-    this.router.navigate([Tab2Page,id]);
+  edit(id: string) {
+    this.router.navigate([Tab2Page, id]);
   }
 
-  async delete(id:any){
+  async delete(id: any) {
     console.log('delete');
     console.log(id);
     await this.ui.presentLoading();
-    this.db.removeIncidencia(id).then(r=>{
-      this.ui.presentToast('Incidencia eliminada correctamente','success');
-    }).catch(err=>{
+    this.db.removeIncidencia(id).then(r => {
+      this.ui.presentToast('Incidencia eliminada correctamente', 'success');
+    }).catch(err => {
       console.log(err);
-      this.ui.presentToast('Error al borrar la incidencia','danger');
+      this.ui.presentToast('Error al borrar la incidencia', 'danger');
     });
     await this.ui.hideLoading();
   }
@@ -86,5 +86,5 @@ export class Tab1Page {
   public logout() {
     this.auth.logout();
   }
-  
+
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { LoadingController, ToastController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-ui',
@@ -9,10 +9,12 @@ import { LoadingController, ToastController } from '@ionic/angular';
 export class UiComponent implements OnInit {
 
   constructor(private loadingController: LoadingController,
-    private toastController: ToastController) { }
+    private toastController: ToastController,
+    private alertController: AlertController) { }
   loading: HTMLIonLoadingElement;
   ngOnInit() { }
 
+  
   public async presentLoading() {
     await this.hideLoading();
 
@@ -22,12 +24,24 @@ export class UiComponent implements OnInit {
     await this.loading.present();
   }
 
+  async presentAlert(title:string,subtitle:string,message:string) {
+    const alert = await this.alertController.create({
+      header: title,
+      subHeader: subtitle,
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
   public async hideLoading() {
     if (this.loading) {
       await this.loading.dismiss();
     }
     this.loading = null;
   }
+
+
 
   public async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({

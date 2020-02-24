@@ -33,6 +33,12 @@
             ],
             "styles": [
               {
+                "input": "node_modules/animate.css/animate.min.css"
+              },
+              {
+                "input": "styles.css"
+              },
+              {
                 "input": "src/theme/variables.scss"
               },
               {
@@ -128,7 +134,9 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "e2e": {

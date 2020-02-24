@@ -43,7 +43,9 @@ export class AuthService {
 
   public loginGoogle():Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.google.login({}).then(d => {
+      this.google.login({
+
+      }).then(d => {
         console.log(d);
         if (d && d.email) {
           let user: User = {
@@ -59,7 +61,8 @@ export class AuthService {
           resolve(false);
         }
       })
-        .catch(err => resolve(false));
+        .catch(err => {console.log(err);resolve(false);
+        });
     });
   }
 

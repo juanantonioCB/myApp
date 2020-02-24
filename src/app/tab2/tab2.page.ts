@@ -11,7 +11,7 @@ import { IncidenciasService } from '../servicios/incidencias.service';
 import { UiComponent } from '../common/ui/ui.component';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
 import { Tab1Page } from '../tab1/tab1.page';
-
+import { File, IWriteOptions, FileEntry } from '@ionic-native/file/ngx';
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -27,6 +27,7 @@ export class Tab2Page {
   isRunning: boolean;
   incidencia: Incidencia;
   id: string;
+
   constructor(private formBuilder: FormBuilder, private router: Router,
     private popoverController: PopoverController,
     private ui: UiComponent,
@@ -34,7 +35,8 @@ export class Tab2Page {
     private incidenciaDB: IncidenciasService,
     private imagePicker: ImagePicker,
     private route: ActivatedRoute,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private file: File
   ) {
     this.incidencia = {
       nombre: undefined,
@@ -76,22 +78,31 @@ export class Tab2Page {
         this.image = res.imagen;
         this.loadUbicacion(res.latitud, res.longitud);
       });
-      
+
     }
   }
 
   public choosePhoto() {
-    let options = {
-      maximumImagesCount: 1,
-      width: 800,
-      height: 800,
+    const options: CameraOptions = {
       quality: 100,
-    };
-    this.imagePicker.getPictures(options).then((results) => {
-      for (var i = 0; i < results.length; i++) {
-        console.log('Image URI: ' + results[i]);
-      }
-    }, (err) => { });
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+    }
+    this.camera.getPicture(options).then(async (imageData) => {
+      await this.ui.generateImage('data:image/jpeg;base64,' + imageData, 1, 300, 300).then(im => {
+        this.image = 'data:image/jpeg;base64,' + im;
+      }).catch(async err => {
+        console.log('ERROR DE COMPRESIÓN' + err);
+        this.image === undefined;
+        await this.ui.presentAlert('Error','','Archivo no válido');
+
+      });
+    }, (err) => {
+      console.log('ERROR EN LA CÁMARA ' + err);
+      this.ui.presentToast('Ha ocurrido un error al cargar la cámara', 'danger');
+    });
   }
 
   public takePhoto() {
@@ -99,8 +110,9 @@ export class Tab2Page {
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    }
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.CAMERA
+    };
     this.camera.getPicture(options).then(async (imageData) => {
       await this.ui.generateImage('data:image/jpeg;base64,' + imageData, 1, 300, 300).then(im => {
         this.image = 'data:image/jpeg;base64,' + im;
@@ -157,7 +169,6 @@ export class Tab2Page {
     await this.ui.hideLoading();
     this.router.navigate([Tab1Page]);
   }
-
   cargarUbicacion() {
     // Address -> latitude,longitude
     Geocoder.geocode({
@@ -206,7 +217,6 @@ export class Tab2Page {
       this.isRunning = false;
     });
   }
-
 
   loadmap() {
     LocationService.getMyLocation().then(async (myLocation: MyLocation) => {
