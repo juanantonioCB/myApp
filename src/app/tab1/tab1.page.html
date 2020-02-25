@@ -39,7 +39,7 @@
 
 
 
-    <ion-item-sliding *ngFor="let incidencia of incidenciasPage | filtro:textoBuscar">
+    <ion-item-sliding *ngFor="let incidencia of incidencias | filtro:textoBuscar">
       <ion-item  lines="inset" button [routerLink]="['/tabs/tab2',incidencia.id]">
         
         <ion-thumbnail slot="start">

@@ -16,6 +16,7 @@ import { PipesModule } from '../pipes/pipes.module';
     IonicModule,
     CommonModule,
     FormsModule,
+    
     TranslateModule,
     RouterModule.forChild([{ path: '', component: Tab1Page }])
   ],

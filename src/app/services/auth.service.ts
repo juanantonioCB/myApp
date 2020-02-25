@@ -70,10 +70,6 @@ export class AuthService {
     }
   }
 
-  public loginEmail(name:string,password:string){
-
-  }
-
   public loginGoogle():Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.google.login({

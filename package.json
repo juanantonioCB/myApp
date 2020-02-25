@@ -131,7 +131,8 @@
       },
       "cordova-plugin-firebase-authentication": {
         "FIREBASE_AUTH_VERSION": "19.2.+"
-      }
+      },
+      "cordova-support-google-services": {}
     },
     "platforms": [
       "browser",

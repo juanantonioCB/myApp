@@ -9,6 +9,8 @@ import { Incidencia } from '../model/Incidencia';
 import { Router } from '@angular/router';
 import { Tab2Page } from '../tab2/tab2.page';
 import { trigger, state, style, animate, transition } from "@angular/animations";
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -21,44 +23,36 @@ export class Tab1Page {
   textoBuscar: string = '';
   reproduciendo: boolean;
   incidencias: Incidencia[];
-  incidenciasPage: Incidencia[];
-  private readonly offset: number = 5;
-  private index: number = 0;
+
   constructor(private translate: TranslateService, private auth: AuthService,
     private nativeAudio: NativeAudio,
     private db: IncidenciasService,
     private router: Router,
+    private local:NativeStorage,
     private ui: UiComponent) {
     this.nombre = auth.user.displayName;
     this.imagen = auth.user.imageURL;
     this.email = auth.user.email;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.cargarLocal();
     this.db.getIncidencias().subscribe(res => {
       this.incidencias = res;
-      this.incidenciasPage = this.incidencias.slice(this.index, this.offset + this.index);
-      this.index += this.offset;
+      this.guardarLocal();
     });
-
   }
 
-  loadData(event) {
-    if(this.incidenciasPage.length<this.incidencias.length){
-      setTimeout(() => {
-        let news = this.incidencias.slice(this.index, this.offset + this.index);
-        this.index += this.offset;
-        for (let i = 0; i < news.length; i++) {
-          this.incidenciasPage.push(news[i]);
-        }
-        event.target.complete;
-  
-        if (this.incidenciasPage.length === this.incidencias.length) {
-          event.target.disabled;
-        }
-      }, 1000);
-    }
-    
+  async guardarLocal(){
+    await this.local.setItem('incidencias',this.incidencias);
+  }
+
+  async cargarLocal(){
+    this.local.getItem('incidencias').then(r=>{
+      this.incidencias=r;
+    }).catch(err=>{
+      console.log(err);
+    })
   }
 
   async radio() {
