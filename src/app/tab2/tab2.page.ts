@@ -197,6 +197,9 @@ export class Tab2Page {
         marker.showInfoWindow();
         this.isRunning = false;
       });
+    }).catch(async e=>{
+      console.log(e);
+      await this.ui.presentAlert('Error','','Ha ocurrido un error al conocer tu ubicación');
     });
   }
 
