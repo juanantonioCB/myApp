@@ -96,7 +96,7 @@ export class Tab2Page {
       }).catch(async err => {
         console.log('ERROR DE COMPRESIÓN' + err);
         this.image === undefined;
-        await this.ui.presentAlert('Error','','Archivo no válido');
+        await this.ui.presentAlert('Error', '', 'Archivo no válido');
 
       });
     }, (err) => {
@@ -153,7 +153,11 @@ export class Tab2Page {
     if (this.id) {
       await this.incidenciaDB.updateIncidencia(this.incidencia, this.id).then(async res => {
         await this.ui.presentToast('Incidencia actualizada correctamente', 'success');
-      });
+      }).catch(async err => {
+        console.log(err);
+        await this.ui.presentAlert('Ha ocurrido un error', '', err);
+      }
+      );
     } else {
       this.incidenciaDB.addIncidencia(this.incidencia).then(async res => {
         await this.ui.presentToast('Incidencia agregada correctamente', 'success');
@@ -234,7 +238,7 @@ export class Tab2Page {
         marker.showInfoWindow();
         this.isRunning = false;
       });
-    }).catch(err=>{
+    }).catch(err => {
       console.log(err);
     });
   }

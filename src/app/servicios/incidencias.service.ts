@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 import { config, Observable } from 'rxjs';
-import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestoreCollection, AngularFirestore, DocumentReference } from 'angularfire2/firestore';
 import { Incidencia } from '../model/Incidencia';
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,6 @@ export class IncidenciasService {
 
   constructor(private db: AngularFirestore) {
     this.incidenciasCollection = db.collection<Incidencia>('incidencias');
-
     this.incidencias = this.incidenciasCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
@@ -26,19 +25,19 @@ export class IncidenciasService {
       })
     );
   }
-  getIncidencias() {
+  getIncidencias():Observable<Incidencia[]> {
     return this.incidencias;
   }
-  getIncidencia(id) {
+  getIncidencia(id):Observable<Incidencia> {
     return this.incidenciasCollection.doc<Incidencia>(id).valueChanges();
   }
-  updateIncidencia(incidencia: Incidencia, id: string) {
+  updateIncidencia(incidencia: Incidencia, id: string):Promise<void> {
     return this.incidenciasCollection.doc(id).update(incidencia);
   }
-  addIncidencia(incidencia: Incidencia) {
+  addIncidencia(incidencia: Incidencia):Promise<DocumentReference> {
     return this.incidenciasCollection.add(incidencia);
   }
-  removeIncidencia(id) {
+  removeIncidencia(id):Promise<void> {
     return this.incidenciasCollection.doc(id).delete();
   }
 

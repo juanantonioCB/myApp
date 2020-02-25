@@ -99,7 +99,7 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.4.3",
-    "cordova-plugin-ionic-googleplus": "8.2.1"
+    "cordova-plugin-googleplus": "8.2.1"
   },
   "description": "An Ionic project",
   "cordova": {
@@ -125,10 +125,6 @@
       "cordova-plugin-media-capture": {},
       "cordova-plugin-streaming-media": {},
       "cordova-plugin-nativeaudio": {},
-      "cordova-plugin-ionic-googleplus": {
-        "WEB_APPLICATION_CLIENT_ID": "452681644208-vaa0sl5859roo3qk6o9b41tge7i1ag01.apps.googleusercontent.com",
-        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.527882823166-16244sp2c1m53ovkf67e09ui64bmo6bg"
-      },
       "cordova-plugin-firebase-authentication": {
         "FIREBASE_AUTH_VERSION": "19.2.+"
       },

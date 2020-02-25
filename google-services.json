@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "527882823166",
+    "firebase_url": "https://myapp-345a3.firebaseio.com",
+    "project_id": "myapp-345a3",
+    "storage_bucket": "myapp-345a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527882823166:android:e52a9086b82bc5ab718caf",
+        "android_client_info": {
+          "package_name": "juanantonio.myApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1gXUvFiVyEzTLqPZ6i9yOmCA3DxnuayY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527882823166-16244sp2c1m53ovkf67e09ui64bmo6bg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

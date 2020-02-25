@@ -41,6 +41,7 @@ export class Tab1Page {
       this.incidencias = res;
       this.guardarLocal();
     });
+    this.cargarLocal();
   }
 
   async guardarLocal(){
@@ -58,10 +59,15 @@ export class Tab1Page {
   async radio() {
     if (!this.reproduciendo) {
       await this.ui.presentLoading();
-      this.nativeAudio.preloadSimple('uniqueId1', 'http://radioclasica.rtveradio.cires21.com/radioclasica/mp3/icecast.audio');
-      this.nativeAudio.play('uniqueId1').then(d => {
-        this.reproduciendo = true;
+      
+      this.nativeAudio.preloadSimple('uniqueId1', 'http://radioclasica.rtveradio.cires21.com/radioclasica/mp3/icecast.audio').then(r=>{
+        this.nativeAudio.play('uniqueId1').then(d => {
+          this.reproduciendo = true;
+        }).catch(err=>{
+          console.log(err);
+        });
       });
+      
       await this.ui.hideLoading();
     } else {
       await this.ui.presentLoading();

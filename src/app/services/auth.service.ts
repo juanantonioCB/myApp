@@ -42,7 +42,7 @@ export class AuthService {
         displayName: r.user.displayName,
         imageURL: '',
         userId: r.user.uid
-      }
+      };
       this.user = user;
       this.saveSession(user);
     })
